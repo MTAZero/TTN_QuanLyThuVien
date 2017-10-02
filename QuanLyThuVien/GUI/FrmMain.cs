@@ -39,6 +39,25 @@ namespace QuanLyThuVien.GUI
             panelMain.Controls.Add(tg);
             tg.Show();
         }
+        private void btnQuanLyMuonTra_Click(object sender, EventArgs e)
+        {
+            FrmQuanLyMuonTra tg = new FrmQuanLyMuonTra();
+            panelMain.Controls.Clear();
+            tg.TopLevel = false;
+            tg.Dock = DockStyle.Fill;
+            panelMain.Controls.Add(tg);
+            tg.Show();
+        }
+
+        private void btnHuongDanSuDung_Click(object sender, EventArgs e)
+        {
+            FrmHuongDanSuDung tg = new FrmHuongDanSuDung();
+            panelMain.Controls.Clear();
+            tg.TopLevel = false;
+            tg.Dock = DockStyle.Fill;
+            panelMain.Controls.Add(tg);
+            tg.Show();
+        }
 
 
 
