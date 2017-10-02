@@ -15,12 +15,24 @@ namespace QuanLyThuVien.GUI
     public partial class FrmMuonSach : Form
     {
 
+        private DOCGIA docgia = new DOCGIA();
+
         #region Hàm khởi tạo
-        public FrmMuonSach()
+        public FrmMuonSach(DOCGIA a)
         {
             InitializeComponent();
+            docgia = a;
         }
 
+        #endregion
+
+        #region LoadForm
+        private void FrmMuonSach_Load(object sender, EventArgs e)
+        {
+            cbxDauSach.DataSource = new DauSachF().DauSachS.ToList();
+            cbxDauSach.DisplayMember = "TEN";
+            cbxDauSach.ValueMember = "ID";
+        }
         #endregion
 
 
