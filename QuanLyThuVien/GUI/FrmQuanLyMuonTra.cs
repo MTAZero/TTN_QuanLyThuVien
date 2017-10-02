@@ -103,6 +103,67 @@ namespace QuanLyThuVien.GUI
         }
         #endregion
 
+        #region Sự kiện
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            LoadDgvDocGia();
+        }
 
+        private void btnMuon_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int id = (int)dgvDocGia.SelectedRows[0].Cells["ID"].Value;
+                DOCGIA docgia = new DocGiaF().FindEntity(id);
+                FrmMuonSach tg = new FrmMuonSach(docgia);
+                tg.ShowDialog();
+                LoadDgvDocGia();
+            }
+            catch
+            {
+                MessageBox.Show("Chưa có độc giả nào được chọn",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnTra_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int id = (int)dgvMuon.SelectedRows[0].Cells["IDMuonTra"].Value;
+
+                MUONTRA z = new MuonTraF().FindEntity(id);
+                DOCGIA docgia = new DocGiaF().FindEntity((int)z.DOCGIAID);
+                DAUSACH dausach = new DauSachF().FindEntity((int)z.DAUSACHID);
+
+                DialogResult rs = MessageBox.Show("Xác nhận trả sách\nĐộc giả : " + docgia.HOTEN + "\nĐầu sách : " + dausach.TEN,
+                                                  "Thông báo",
+                                                  MessageBoxButtons.OKCancel,
+                                                  MessageBoxIcon.Warning);
+                if (rs == DialogResult.Cancel) return;
+
+                bool ok = new MuonTraF().TRASACH(z);
+                if (ok)
+                {
+                    MessageBox.Show("Trả sách thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDgvDocGia();
+                }
+                else
+                {
+                    MessageBox.Show("Trả sách thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            catch
+            {
+                MessageBox.Show("Chưa có thông tin mượn trả nào được lựa chọn",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+        }
+        #endregion
     }
 }
