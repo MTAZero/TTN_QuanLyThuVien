@@ -58,6 +58,13 @@ namespace QuanLyThuVien.GUI
             panelMain.Controls.Add(tg);
             tg.Show();
         }
+        private void btnDong_Click(object sender, EventArgs e)
+        {
+            DialogResult tg = MessageBox.Show("Bạn có chắc chắn đóng?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (tg == DialogResult.Cancel) return;
+            this.Close();
+        }
+        #endregion
 
 
 
