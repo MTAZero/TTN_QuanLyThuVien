@@ -125,5 +125,173 @@ namespace QuanLyThuVien.GUI
         }
         #endregion
 
+        #region sự kiện
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            ClearControl();
+            LoadDgvDauSach();
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            if (btnThem.Text == "Thêm")
+            {
+
+                btnThem.Text = "Lưu";
+                btnSua.Enabled = false;
+                btnXoa.Text = "Hủy";
+
+                groupThongTin.Enabled = true;
+                dgvDauSach.Enabled = false;
+
+                btnTimKiem.Enabled = false;
+                txtTimKiem.Enabled = false;
+
+                ClearControl();
+
+                return;
+            }
+
+            if (btnThem.Text == "Lưu")
+            {
+                if (Check())
+                {
+
+                    btnThem.Text = "Thêm";
+                    btnSua.Enabled = true;
+                    btnXoa.Text = "Xóa";
+
+                    groupThongTin.Enabled = false;
+                    dgvDauSach.Enabled = true;
+
+                    btnTimKiem.Enabled = true;
+                    txtTimKiem.Enabled = true;
+
+                    DAUSACH tg = getItemByForm();
+                    bool ok = DauSach_Service.Insert(tg);
+
+                    if (ok)
+                    {
+                        MessageBox.Show("Thêm đầu sách thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Thêm đầu sách thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    LoadDgvDauSach();
+                }
+
+                return;
+            }
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            DAUSACH tg = getItemById();
+            if (tg.ID == 0)
+            {
+                MessageBox.Show("Chưa có đầu sách nào được chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (btnSua.Text == "Sửa")
+            {
+                btnSua.Text = "Lưu";
+                btnThem.Enabled = false;
+                btnXoa.Text = "Hủy";
+
+                groupThongTin.Enabled = true;
+                dgvDauSach.Enabled = false;
+
+                btnTimKiem.Enabled = false;
+                txtTimKiem.Enabled = false;
+                return;
+            }
+
+            if (btnSua.Text == "Lưu")
+            {
+                if (Check())
+                {
+                    btnSua.Text = "Sửa";
+                    btnThem.Enabled = true;
+                    btnXoa.Text = "Xóa";
+
+                    groupThongTin.Enabled = false;
+                    dgvDauSach.Enabled = true;
+
+                    btnTimKiem.Enabled = true;
+                    txtTimKiem.Enabled = true;
+
+                    DAUSACH tgs = getItemByForm();
+                    bool ok = DauSach_Service.Update(tgs, tg.ID);
+
+                    if (ok)
+                    {
+                        MessageBox.Show("Sửa thông tin sách thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Sửa thông tin sách thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    LoadDgvDauSach();
+                }
+
+                return;
+            }
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            if (btnXoa.Text == "Xóa")
+            {
+                DAUSACH tg = getItemById();
+                if (tg.ID == 0)
+                {
+                    MessageBox.Show("Chưa có đầu sách nào được chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                DialogResult rs = MessageBox.Show("Bạn có chắc chắn xóa đầu sách này", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (rs == DialogResult.Cancel) return;
+
+                bool xoa = DauSach_Service.Delete(tg);
+                if (xoa)
+                {
+                    MessageBox.Show("Xóa đầu sách thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Xóa đầu sách thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                LoadDgvDauSach();
+
+                return;
+            }
+
+            if (btnXoa.Text == "Hủy")
+            {
+                btnXoa.Text = "Xóa";
+                btnThem.Text = "Thêm";
+                btnSua.Text = "Sửa";
+
+                btnThem.Enabled = true;
+                btnSua.Enabled = true;
+
+                groupThongTin.Enabled = false;
+                dgvDauSach.Enabled = true;
+
+                btnTimKiem.Enabled = true;
+                txtTimKiem.Enabled = true;
+
+                UpdateDetail();
+
+                return;
+            }
+        }
+        #endregion
+
     }
 }
