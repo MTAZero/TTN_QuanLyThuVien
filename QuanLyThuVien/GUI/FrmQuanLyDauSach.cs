@@ -59,7 +59,71 @@ namespace QuanLyThuVien.GUI
             groupThongTin.Enabled = false;
         }
         #endregion
+        #region Hàm chức năng
+        private bool Check()
+        {
+            if (txtTenSach.Text == "")
+            {
+                MessageBox.Show("Tên sách không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
+            if (txtTacGia.Text == "")
+            {
+                MessageBox.Show("Tên tác giả không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+        private void ClearControl()
+        {
+            txtTacGia.Text = "";
+            txtTenSach.Text = "";
+        }
+        private void UpdateDetail()
+        {
+            DAUSACH tg = getItemById();
+            if (tg.ID == 0) return;
+            txtTacGia.Text = tg.TACGIA;
+            txtTenSach.Text = tg.TEN;
+        }
+        private DAUSACH getItemById()
+        {
+            try
+            {
+                int id = (int)dgvDauSach.SelectedRows[0].Cells["ID"].Value;
+                return DauSach_Service.FindEntity(id);
+            }
+            catch
+            {
+                // k có dòng nào đang được chọn
+            }
+            return new DAUSACH();
+        }
+
+        private DAUSACH getItemByForm()
+        {
+            DAUSACH ans = new DAUSACH();
+            ans.TEN = txtTenSach.Text;
+            ans.TACGIA = txtTacGia.Text;
+            return ans;
+        }
+
+        #endregion
+
+        #region Sự kiện ngầm
+        private void dgvDauSach_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                index1 = index;
+                index = dgvDauSach.SelectedRows[0].Index;
+                UpdateDetail();
+            }
+            catch { }
+        }
+        #endregion
 
     }
 }
