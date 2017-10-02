@@ -171,6 +171,172 @@ namespace QuanLyThuVien.GUI
         }
         #endregion
 
- 
+        #region sự kiện
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            ClearControl();
+            LoadDgvDOCGIA();
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            if (btnThem.Text == "Thêm")
+            {
+
+                btnThem.Text = "Lưu";
+                btnSua.Enabled = false;
+                btnXoa.Text = "Hủy";
+
+                groupThongTin.Enabled = true;
+                dgvDOCGIA.Enabled = false;
+
+                btnTimKiem.Enabled = false;
+                txtTimKiem.Enabled = false;
+
+                ClearControl();
+
+                return;
+            }
+
+            if (btnThem.Text == "Lưu")
+            {
+                if (Check())
+                {
+
+                    btnThem.Text = "Thêm";
+                    btnSua.Enabled = true;
+                    btnXoa.Text = "Xóa";
+
+                    groupThongTin.Enabled = false;
+                    dgvDOCGIA.Enabled = true;
+
+                    btnTimKiem.Enabled = true;
+                    txtTimKiem.Enabled = true;
+
+                    DOCGIA tg = getItemByForm();
+                    bool ok = DOCGIA_Service.Insert(tg);
+
+                    if (ok)
+                    {
+                        MessageBox.Show("Thêm thông tin độc giả thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Thêm thông tin độc giả thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    LoadDgvDOCGIA();
+                }
+
+                return;
+            }
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            DOCGIA tg = getItemById();
+            if (tg.ID == 0)
+            {
+                MessageBox.Show("Chưa có độc giả nào được chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (btnSua.Text == "Sửa")
+            {
+                btnSua.Text = "Lưu";
+                btnThem.Enabled = false;
+                btnXoa.Text = "Hủy";
+
+                groupThongTin.Enabled = true;
+                dgvDOCGIA.Enabled = false;
+
+                btnTimKiem.Enabled = false;
+                txtTimKiem.Enabled = false;
+                return;
+            }
+
+            if (btnSua.Text == "Lưu")
+            {
+                if (Check())
+                {
+                    btnSua.Text = "Sửa";
+                    btnThem.Enabled = true;
+                    btnXoa.Text = "Xóa";
+
+                    groupThongTin.Enabled = false;
+                    dgvDOCGIA.Enabled = true;
+
+                    btnTimKiem.Enabled = true;
+                    txtTimKiem.Enabled = true;
+
+                    DOCGIA tgs = getItemByForm();
+                    bool ok = DOCGIA_Service.Update(tgs, tg.ID);
+
+                    if (ok)
+                    {
+                        MessageBox.Show("Sửa thông tin độc giả thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Sửa thông tin độc giả thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    LoadDgvDOCGIA();
+                }
+
+                return;
+            }
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            if (btnXoa.Text == "Xóa")
+            {
+                DOCGIA tg = getItemById();
+                if (tg.ID == 0)
+                {
+                    MessageBox.Show("Chưa có độc giả nào được chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                DialogResult rs = MessageBox.Show("Bạn có chắc chắn xóa thông tin độc giả này?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (rs == DialogResult.Cancel) return;
+
+                bool xoa = DOCGIA_Service.Delete(tg);
+                if (xoa)
+                {
+                    MessageBox.Show("Xóa thông tin độc giả thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Xóa thông tin độc giả thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                LoadDgvDOCGIA();
+
+                return;
+            }
+
+            if (btnXoa.Text == "Hủy")
+            {
+                btnXoa.Text = "Xóa";
+                btnThem.Text = "Thêm";
+                btnSua.Text = "Sửa";
+
+                btnThem.Enabled = true;
+                btnSua.Enabled = true;
+
+                groupThongTin.Enabled = false;
+                dgvDOCGIA.Enabled = true;
+
+                btnTimKiem.Enabled = true;
+                txtTimKiem.Enabled = true;
+
+                UpdateDetail();
+
+                return;
+            }
+        }
+        #endregion
     }
 }
