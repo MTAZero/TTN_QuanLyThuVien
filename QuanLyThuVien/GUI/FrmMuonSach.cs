@@ -35,6 +35,41 @@ namespace QuanLyThuVien.GUI
         }
         #endregion
 
+        #region Sự kiện
+        private void btnMuon_Click(object sender, EventArgs e)
+        {
+            MUONTRA tg = new MUONTRA();
+            tg.DAUSACHID = (int)cbxDauSach.SelectedValue;
+            tg.NGAYMUON = dateNgayMuon.Value;
+            tg.DOCGIAID = docgia.ID;
+            tg.TRANGTHAI = 0;
+            tg.NGAYTRA = (DateTime.Now);
+
+            bool ok = new MuonTraF().Insert(tg);
+            if (ok)
+            {
+                MessageBox.Show("Thêm phiếu mượn thành công",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Thêm phiếu mượn thất bại",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+
+            this.Close();
+        }
+
+        private void btnHuy_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        #endregion
+
 
     }
 }
